@@ -1,0 +1,111 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="HSL.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps">
+
+    <!--added by self-->
+    <phone:PhoneApplicationPage.Resources>
+        <ControlTemplate x:Key="pinMyLoc" TargetType="my:Pushpin">
+            <Grid Height="26" Width="26" Margin="-13,-13,0,0" RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <CompositeTransform Rotation="-45"/>
+                </Grid.RenderTransform>
+                <Rectangle Fill="Black" HorizontalAlignment="Center"          Margin="0" Stroke="White" VerticalAlignment="Center"          Height="26" Width="26"/>
+                <Ellipse HorizontalAlignment="Center" Height="16" Margin="0"          VerticalAlignment="Center" Fill="Yellow" Width="16"/>
+            </Grid>
+        </ControlTemplate>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--Pivot Control-->
+        <controls:Pivot Title="HSL Journey Planner" x:Name="mainPivot" SelectionChanged="Pivot_SelectionChanged">
+           
+            
+            <!--Pivot item one-->
+            <controls:PivotItem Header="Routes"  >
+                <!--Double line list with text wrapping-->
+                <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                    <TextBox Height="72" HorizontalAlignment="Left" Margin="42,15,0,0" Name="fromTextBox" Text="" VerticalAlignment="Top" Width="234" GotFocus="fromTextBox_GotFocus" KeyDown="fromToTextBox_KeyDown" />
+                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="2,36,0,0" Name="textBlock1" Text="From:" VerticalAlignment="Top" />
+                    <TextBox Height="72" HorizontalAlignment="Left" Margin="42,94,0,0" Name="toTextBox" Text="" VerticalAlignment="Top" Width="234" GotFocus="toTextBox_GotFocus" KeyDown="fromToTextBox_KeyDown" />
+                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="6,119,0,0" Name="textBlock2" Text="To:" VerticalAlignment="Top" />
+                    <Button Content="Nearby" FontSize="18" Height="153" Margin="262,15,60,0" Name="NearbyButton" VerticalAlignment="Top" Click="NearbyButton_Click" Width="110" />
+                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="2,259,0,0" Name="textBlock3" Text="Time:" VerticalAlignment="Top" />
+                    <RadioButton Content="RadioButton" Height="75" HorizontalAlignment="Left" Margin="-269,212,0,0" Name="radioButton1" VerticalAlignment="Top" Width="159" FontSize="16" />
+                    <TextBlock HorizontalAlignment="Left" Margin="4,186,0,319" Name="textBlock4" Text="Date:" />
+                    <toolkit:DatePicker HorizontalAlignment="Left" Margin="42,0,0,297" Name="datePicker1" VerticalAlignment="Bottom" Width="236" ValueChanged="datePicker1_ValueChanged" />
+                    <toolkit:TimePicker Margin="42,235,154,0" Name="timePicker1" VerticalAlignment="Top" Height="74" ValueChanged="timePicker1_ValueChanged" />
+                    <CheckBox Content="Arrival" Height="72" HorizontalAlignment="Left" Margin="41,317,0,0" Name="checkBox1" VerticalAlignment="Top" Width="150" Checked="checkBox1_Checked" Unchecked="checkBox1_Unchecked" />
+                </Grid>
+            </controls:PivotItem>
+
+            <!--Pivot item two-->
+            <controls:PivotItem Header="Cycling">
+                <!--Triple line list no text wrapping-->
+                <ListBox x:Name="SecondListBox" Margin="0,0,-12,0" ItemsSource="{Binding Items}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,17">
+                                <TextBlock Text="{Binding LineOne}" TextWrapping="NoWrap" Margin="12,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                <TextBlock Text="{Binding LineThree}" TextWrapping="NoWrap" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+
+            <!--Pivot item four-->
+            <controls:PivotItem Header="Stops">
+                <!--Triple line list no text wrapping-->
+                <ListBox x:Name="FourthListBox" Margin="0,0,-12,0" ItemsSource="{Binding Items}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,17">
+                                <TextBlock Text="{Binding LineOne}" TextWrapping="NoWrap" Margin="12,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                <TextBlock Text="{Binding LineThree}" TextWrapping="NoWrap" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+
+            <!--Pivot item five-->
+            <controls:PivotItem Header="Lines">
+                <!--Triple line list no text wrapping-->
+                <ListBox x:Name="FifthListBox" Margin="0,0,-12,0" ItemsSource="{Binding Items}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,17">
+                                <TextBlock Text="{Binding LineOne}" TextWrapping="NoWrap" Margin="12,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                <TextBlock Text="{Binding LineThree}" TextWrapping="NoWrap" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+
+        </controls:Pivot>
+    </Grid>
+
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/Search.png" Text="Search" Click="ApplicationBarIconButton_Click_Search" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
